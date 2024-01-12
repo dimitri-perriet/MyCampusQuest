@@ -35,9 +35,11 @@ const Header = () => {
                     </ul>
                 </div>
                 <div className="items-center flex-shrink-0 hidden lg:flex">
-                    <button className="px-8 py-3 font-semibold rounded dark:bg-violet-400 dark:text-gray-900">Se
-                        connecter
-                    </button>
+                    <a href="/login">
+                        <button className="px-8 py-3 font-semibold rounded dark:bg-violet-400 dark:text-gray-900">Se
+                            connecter
+                        </button>
+                    </a>
                 </div>
                 <button className="p-4 lg:hidden">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
