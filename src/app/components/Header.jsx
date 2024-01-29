@@ -1,6 +1,11 @@
+"use client";
 import React from 'react';
+import {UserButton, SignInButton, useUser} from "@clerk/nextjs";
+
 
 const Header = () => {
+    const { isLoaded, isSignedIn, user } = useUser();
+
     return (
         <header className="p-4 dark:bg-gray-800 dark:text-gray-100">
             <div className="container flex justify-between h-16 mx-auto">
@@ -34,20 +39,16 @@ const Header = () => {
                         </li>
                     </ul>
                 </div>
-                <div className="items-center flex-shrink-0 hidden lg:flex">
-                    <a href="/login">
-                        <button className="px-8 py-3 font-semibold rounded dark:bg-violet-400 dark:text-gray-900">Se
-                            connecter
-                        </button>
-                    </a>
-                </div>
-                <button className="p-4 lg:hidden">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                         className="w-6 h-6 dark:text-gray-100">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                              d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
+
+                {isSignedIn ? (
+                    <span className="flex items-center">
+                        <UserButton afterSignOutUrl="/"/>
+                    </span>
+                ) : (
+                    <span className="flex items-center">
+                        <SignInButton>Se connecter</SignInButton>
+                    </span>
+                )}
             </div>
         </header>
     );

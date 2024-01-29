@@ -1,10 +1,8 @@
 import Image from 'next/image'
-import Header from "@/app/components/Header";
 
 export default function Home() {
   return (
       <div>
-        <Header/>
         <section className="dark:bg-gray-800 dark:text-gray-100">
           <div className="container max-w-xl p-6 py-12 mx-auto space-y-24 lg:px-8 lg:max-w-7xl">
             <div>
