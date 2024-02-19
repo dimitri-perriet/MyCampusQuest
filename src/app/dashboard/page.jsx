@@ -1,6 +1,8 @@
 "use client";
 import {useEffect, useState} from 'react';
 import QrReader from 'modern-react-qr-reader';
+import addNotification from 'react-push-notification';
+
 
 export default function Home() {
     const [qrData, setQrData] = useState(null);
@@ -9,6 +11,12 @@ export default function Home() {
     const handleScan = (data) => {
         if (data) {
             setQrData(data);
+            addNotification({
+                title: 'QR CODE Scanné avec succès',
+                subtitle: 'Notification',
+                message: 'Vous avez scanné le QR code avec succès.',
+                native: true
+            });
         }
     };
 
@@ -59,8 +67,8 @@ export default function Home() {
             <section className="dark:bg-gray-800 dark:text-gray-100">
                 <div className="container max-w-xl p-6 py-12 mx-auto space-y-24 lg:px-8 lg:max-w-7xl">
                     <div>
-                        <h2 className="text-3xl font-bold tracki text-center sm:text-5xl dark:text-gray-50">VOUS ETES </h2>
-                        <p className="max-w-3xl mx-auto mt-4 text-xl text-center dark:text-gray-400">CONNECTE</p>
+                        <h2 className="text-3xl font-bold tracki text-center sm:text-5xl dark:text-gray-50">Bienvenue </h2>
+                        <p className="max-w-3xl mx-auto mt-4 text-xl text-center dark:text-gray-400">dans votre espace personnel</p>
                     </div>
                     <div className="grid lg:gap-8 lg:grid-cols-2 lg:items-center">
                         {/* Ajoutez le scanner QR Code ici */}
