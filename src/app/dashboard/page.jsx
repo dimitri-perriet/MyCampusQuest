@@ -1,6 +1,6 @@
 "use client";
 import { useState } from 'react';
-import { QrReader } from 'react-qr-reader';
+import QrReader from 'modern-react-qr-reader';
 
 export default function Home() {
     const [qrData, setQrData] = useState(null);
@@ -27,18 +27,10 @@ export default function Home() {
                         {/* Ajoutez le scanner QR Code ici */}
                         <div>
                             <QrReader
-                                onResult={(result, error) => {
-                                    if (!!result) {
-                                        handleScan(result?.text);
-                                    }
-
-                                    if (!!error) {
-                                        handleError(error);
-                                    }
-                                }}
+                                delay={300}
+                                onError={handleError}
+                                onScan={handleScan}
                                 style={{ width: '100%' }}
-                                facingMode="environment"
-
                             />
                             <p className="mt-3 dark:text-gray-400">Scannez un QR Code pour obtenir des informations.</p>
                         </div>
