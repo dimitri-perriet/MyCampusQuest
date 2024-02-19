@@ -11,6 +11,9 @@ export default function Home() {
     const handleScan = (data) => {
         if (data) {
             setQrData(data);
+            Notification.requestPermission().then(function(result) {
+                console.log(result);
+            });
             addNotification({
                 title: 'QR CODE Scanné avec succès',
                 subtitle: 'Notification',
@@ -29,6 +32,12 @@ export default function Home() {
             setUserLocation({
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude,
+            });
+        });
+
+        document.getElementById('enableNotifications').addEventListener('click', function() {
+            Notification.requestPermission().then(function(result) {
+                console.log(result);
             });
         });
     }, []);
@@ -71,23 +80,22 @@ export default function Home() {
                         <p className="max-w-3xl mx-auto mt-4 text-xl text-center dark:text-gray-400">dans votre espace personnel</p>
                     </div>
                     <div className="grid lg:gap-8 lg:grid-cols-2 lg:items-center">
-                        {/* Ajoutez le scanner QR Code ici */}
                         <div>
                             {canScan ? (
                                 <QrReader
                                     delay={300}
                                     onError={handleError}
                                     onScan={handleScan}
-                                    style={{ width: '100%' }}
+                                    style={{width: '100%'}}
                                 />
                             ) : (
                                 <p>Vous devez être à une certaine localisation pour scanner le QR code.</p>
                             )}
                         </div>
-                        {/* Affichez les données du QR Code */}
                         {qrData && (
                             <div>
-                                <h3 className="text-2xl font-bold tracki sm:text-3xl dark:text-gray-50">Données du QR Code</h3>
+                                <h3 className="text-2xl font-bold tracki sm:text-3xl dark:text-gray-50">Données du QR
+                                    Code</h3>
                                 <p className="mt-3 text-lg dark:text-gray-400">{qrData}</p>
                             </div>
                         )}
