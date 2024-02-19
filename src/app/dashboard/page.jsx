@@ -37,6 +37,8 @@ export default function Home() {
                                     }
                                 }}
                                 style={{ width: '100%' }}
+                                facingMode="environment"
+
                             />
                             <p className="mt-3 dark:text-gray-400">Scannez un QR Code pour obtenir des informations.</p>
                         </div>
