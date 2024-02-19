@@ -29,7 +29,7 @@ export default function Home() {
         const distanceInMeters = haversineDistance(userLocation, targetLocation);
 
 
-        return distanceInMeters <= 2000;
+        return distanceInMeters <= 1000;
     };
 
     const targetLocation = { latitude: 49.200834747727214, longitude: -0.35030825744906413};
@@ -54,7 +54,6 @@ export default function Home() {
         return distanceInKm * 1000;
     }
 
-    console.log(userLocation, targetLocation, canScan);
     return (
         <div>
             <section className="dark:bg-gray-800 dark:text-gray-100">

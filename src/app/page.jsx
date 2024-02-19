@@ -1,6 +1,20 @@
+"use client";
 import Image from 'next/image'
+import {useEffect} from "react";
+import { useRouter } from 'next/navigation';
+import { useUser } from '@clerk/nextjs';
 
 export default function Home() {
+
+  const { isSignedIn } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isSignedIn) {
+      router.push('/dashboard');
+    }
+  }, [isSignedIn, router]);
+
   return (
       <div>
         <section className="dark:bg-gray-800 dark:text-gray-100">
