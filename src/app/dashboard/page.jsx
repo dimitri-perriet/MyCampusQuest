@@ -35,11 +35,6 @@ export default function Home() {
             });
         });
 
-        document.getElementById('enableNotifications').addEventListener('click', function() {
-            Notification.requestPermission().then(function(result) {
-                console.log(result);
-            });
-        });
     }, []);
 
     const isUserNearLocation = (userLocation, targetLocation) => {
