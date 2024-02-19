@@ -1,9 +1,10 @@
 "use client";
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import QrReader from 'modern-react-qr-reader';
 
 export default function Home() {
     const [qrData, setQrData] = useState(null);
+    const [userLocation, setUserLocation] = useState(null);
 
     const handleScan = (data) => {
         if (data) {
@@ -15,6 +16,45 @@ export default function Home() {
         console.error(err);
     };
 
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition((position) => {
+            setUserLocation({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+            });
+        });
+    }, []);
+
+    const isUserNearLocation = (userLocation, targetLocation) => {
+        const distanceInMeters = haversineDistance(userLocation, targetLocation);
+
+
+        return distanceInMeters <= 2000;
+    };
+
+    const targetLocation = { latitude: 49.200834747727214, longitude: -0.35030825744906413};
+    const canScan = userLocation && isUserNearLocation(userLocation, targetLocation);
+
+    function haversineDistance(userLocation, targetLocation) {
+        function toRad(x) {
+            return x * Math.PI / 180;
+        }
+
+        var R = 6371;
+        var x1 = targetLocation.latitude - userLocation.latitude;
+        var dLat = toRad(x1);
+        var x2 = targetLocation.longitude - userLocation.longitude;
+        var dLon = toRad(x2)
+        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(userLocation.latitude)) * Math.cos(toRad(targetLocation.latitude)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var distanceInKm = R * c;
+
+        return distanceInKm * 1000;
+    }
+
+    console.log(userLocation, targetLocation, canScan);
     return (
         <div>
             <section className="dark:bg-gray-800 dark:text-gray-100">
@@ -26,13 +66,16 @@ export default function Home() {
                     <div className="grid lg:gap-8 lg:grid-cols-2 lg:items-center">
                         {/* Ajoutez le scanner QR Code ici */}
                         <div>
-                            <QrReader
-                                delay={300}
-                                onError={handleError}
-                                onScan={handleScan}
-                                style={{ width: '100%' }}
-                            />
-                            <p className="mt-3 dark:text-gray-400">Scannez un QR Code pour obtenir des informations.</p>
+                            {canScan ? (
+                                <QrReader
+                                    delay={300}
+                                    onError={handleError}
+                                    onScan={handleScan}
+                                    style={{ width: '100%' }}
+                                />
+                            ) : (
+                                <p>Vous devez être à une certaine localisation pour scanner le QR code.</p>
+                            )}
                         </div>
                         {/* Affichez les données du QR Code */}
                         {qrData && (
