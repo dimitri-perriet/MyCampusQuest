@@ -35,6 +35,11 @@ export default function Home() {
             });
         });
 
+        document.getElementById('enableNotifications').addEventListener('click', function() {
+            Notification.requestPermission().then(function(result) {
+                console.log(result);
+            });
+        });
     }, []);
 
     const isUserNearLocation = (userLocation, targetLocation) => {
@@ -72,9 +77,13 @@ export default function Home() {
                 <div className="container max-w-xl p-6 py-12 mx-auto space-y-24 lg:px-8 lg:max-w-7xl">
                     <div>
                         <h2 className="text-3xl font-bold tracki text-center sm:text-5xl dark:text-gray-50">Bienvenue </h2>
-                        <p className="max-w-3xl mx-auto mt-4 text-xl text-center dark:text-gray-400">dans votre espace personnel</p>
+                        <p className="max-w-3xl mx-auto mt-4 text-xl text-center dark:text-gray-400">dans votre espace
+                            personnel</p>
+                        <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" id="enableNotifications">Activer les notifications</button>
+
                     </div>
                     <div className="grid lg:gap-8 lg:grid-cols-2 lg:items-center">
+                    {/* Ajoutez le scanner QR Code ici */}
                         <div>
                             {canScan ? (
                                 <QrReader
@@ -87,6 +96,7 @@ export default function Home() {
                                 <p>Vous devez être à une certaine localisation pour scanner le QR code.</p>
                             )}
                         </div>
+                        {/* Affichez les données du QR Code */}
                         {qrData && (
                             <div>
                                 <h3 className="text-2xl font-bold tracki sm:text-3xl dark:text-gray-50">Données du QR
