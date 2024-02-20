@@ -1,25 +1,18 @@
 "use client";
 import {useEffect, useState} from 'react';
 import QrReader from 'modern-react-qr-reader';
-import addNotification from 'react-push-notification';
-
+import Modal from 'react-modal';
 
 export default function Home() {
+    const [quests, setQuests] = useState([]);
+    const [showQrReader, setShowQrReader] = useState(false);
     const [qrData, setQrData] = useState(null);
     const [userLocation, setUserLocation] = useState(null);
 
     const handleScan = (data) => {
         if (data) {
             setQrData(data);
-            Notification.requestPermission().then(function(result) {
-                console.log(result);
-            });
-            addNotification({
-                title: 'QR CODE Scanné avec succès',
-                subtitle: 'Notification',
-                message: 'Vous avez scanné le QR code avec succès.',
-                native: true
-            });
+            setShowQrReader(false);
         }
     };
 
@@ -28,85 +21,80 @@ export default function Home() {
     };
 
     useEffect(() => {
+        fetch('/api/quest')
+            .then(response => response.json())
+            .then(data => setQuests(data));
+
         navigator.geolocation.getCurrentPosition((position) => {
             setUserLocation({
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude,
             });
         });
-
-        document.getElementById('enableNotifications').addEventListener('click', function() {
-            Notification.requestPermission().then(function(result) {
-                console.log(result);
-            });
-        });
     }, []);
 
-    const isUserNearLocation = (userLocation, targetLocation) => {
-        const distanceInMeters = haversineDistance(userLocation, targetLocation);
-
-
-        return distanceInMeters <= 1000;
+    const handleCardClick = () => {
+        setShowQrReader(true);
     };
-
-    const targetLocation = { latitude: 49.200834747727214, longitude: -0.35030825744906413};
-    const canScan = userLocation && isUserNearLocation(userLocation, targetLocation);
-
-    function haversineDistance(userLocation, targetLocation) {
-        function toRad(x) {
-            return x * Math.PI / 180;
-        }
-
-        var R = 6371;
-        var x1 = targetLocation.latitude - userLocation.latitude;
-        var dLat = toRad(x1);
-        var x2 = targetLocation.longitude - userLocation.longitude;
-        var dLon = toRad(x2)
-        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(toRad(userLocation.latitude)) * Math.cos(toRad(targetLocation.latitude)) *
-            Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        var distanceInKm = R * c;
-
-        return distanceInKm * 1000;
-    }
 
     return (
         <div>
             <section className="dark:bg-gray-800 dark:text-gray-100">
-                <div className="container max-w-xl p-6 py-12 mx-auto space-y-24 lg:px-8 lg:max-w-7xl">
-                    <div>
-                        <h2 className="text-3xl font-bold tracki text-center sm:text-5xl dark:text-gray-50">Bienvenue </h2>
-                        <p className="max-w-3xl mx-auto mt-4 text-xl text-center dark:text-gray-400">dans votre espace
-                            personnel</p>
-                        <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" id="enableNotifications">Activer les notifications</button>
-
-                    </div>
-                    <div className="grid lg:gap-8 lg:grid-cols-2 lg:items-center">
-                    {/* Ajoutez le scanner QR Code ici */}
-                        <div>
-                            {canScan ? (
-                                <QrReader
-                                    delay={300}
-                                    onError={handleError}
-                                    onScan={handleScan}
-                                    style={{width: '100%'}}
-                                />
-                            ) : (
-                                <p>Vous devez être à une certaine localisation pour scanner le QR code.</p>
-                            )}
-                        </div>
-                        {/* Affichez les données du QR Code */}
-                        {qrData && (
-                            <div>
-                                <h3 className="text-2xl font-bold tracki sm:text-3xl dark:text-gray-50">Données du QR
-                                    Code</h3>
-                                <p className="mt-3 text-lg dark:text-gray-400">{qrData}</p>
+                <div>
+                    <h2 className="text-3xl font-bold tracki text-center sm:text-5xl dark:text-gray-50">Bienvenue </h2>
+                    <p className="max-w-3xl mx-auto mt-4 text-xl text-center dark:text-gray-400">dans votre espace
+                        personnel</p>
+                </div>
+                <div
+                    className="container max-w-xl p-6 py-12 mx-auto space-y-24 lg:px-8 lg:max-w-7xl flex justify-center items-center">
+                    <div className="grid lg:gap-8 lg:grid-cols-2 lg:items-center justify-center items-center">
+                        {quests.map((quest, index) => (
+                            <div key={index} onClick={handleCardClick}
+                                 className="max-w-xs p-6 rounded-md shadow-md dark:bg-gray-900 dark:text-gray-50">
+                                <div className="mt-6 mb-2">
+                                    <span
+                                        className="block text-xs font-medium tracki uppercase dark:text-violet-400">{quest.name}</span>
+                                    <h2 className="text-xl font-semibold tracki">{quest.description}</h2>
+                                </div>
                             </div>
-                        )}
+                        ))}
                     </div>
                 </div>
             </section>
+            <Modal
+                isOpen={showQrReader}
+                onRequestClose={() => setShowQrReader(false)}
+                contentLabel="QR Code Reader"
+                style={{
+                    content: {
+                        top: '50%',
+                        left: '50%',
+                        right: 'auto',
+                        bottom: 'auto',
+                        marginRight: '-50%',
+                        transform: 'translate(-50%, -50%)',
+                    },
+                }}
+                className="relative flex flex-col items-center max-w-lg gap-4 p-6 rounded-md shadow-md sm:py-8 sm:px-12 dark:bg-gray-900 dark:text-gray-100 bg-white"
+            >
+                <button className="absolute top-2 right-2" onClick={() => setShowQrReader(false)}>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor"
+                         className="flex-shrink-0 w-6 h-6">
+                        <polygon
+                            points="427.314 107.313 404.686 84.687 256 233.373 107.314 84.687 84.686 107.313 233.373 256 84.686 404.687 107.314 427.313 256 278.627 404.686 427.313 427.314 404.687 278.627 256 427.314 107.313"></polygon>
+                    </svg>
+                </button>
+                <QrReader
+                    delay={300}
+                    onError={handleError}
+                    onScan={handleScan}
+                    style={{width: '100%'}}
+                />
+                <button type="button"
+                        className="px-8 py-3 font-semibold rounded-full dark:bg-violet-400 dark:text-gray-900">Scannez
+                    le QR Code pour valider la quête
+                </button>
+            </Modal>
         </div>
     );
 }
