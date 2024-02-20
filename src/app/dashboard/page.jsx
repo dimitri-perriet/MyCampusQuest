@@ -2,17 +2,33 @@
 import {useEffect, useState} from 'react';
 import QrReader from 'modern-react-qr-reader';
 import Modal from 'react-modal';
+import Swal from 'sweetalert2';
 
 export default function Home() {
     const [quests, setQuests] = useState([]);
     const [showQrReader, setShowQrReader] = useState(false);
     const [qrData, setQrData] = useState(null);
     const [userLocation, setUserLocation] = useState(null);
+    const [selectedQuest, setSelectedQuest] = useState(null);
+
 
     const handleScan = (data) => {
         if (data) {
             setQrData(data);
             setShowQrReader(false);
+            if (data === selectedQuest.validate_code) {
+                Swal.fire(
+                    'Succès',
+                    'Vous avez validé la quête avec succès !',
+                    'success'
+                );
+            } else {
+                Swal.fire(
+                    'Erreur',
+                    'Le code QR scanné est incorrect',
+                    'error'
+                );
+            }
         }
     };
 
@@ -33,8 +49,10 @@ export default function Home() {
         });
     }, []);
 
-    const handleCardClick = () => {
+    const handleCardClick = (quest) => {
+        setSelectedQuest(quest);
         setShowQrReader(true);
+        console.log(selectedQuest);
     };
 
     return (
@@ -49,8 +67,7 @@ export default function Home() {
                     className="container max-w-xl p-6 py-12 mx-auto space-y-24 lg:px-8 lg:max-w-7xl flex justify-center items-center">
                     <div className="grid lg:gap-8 lg:grid-cols-2 lg:items-center justify-center items-center">
                         {quests.map((quest, index) => (
-                            <div key={index} onClick={handleCardClick}
-                                 className="max-w-xs p-6 rounded-md shadow-md dark:bg-gray-900 dark:text-gray-50">
+                            <div key={index} onClick={() => handleCardClick(quest)}                                  className="max-w-xs p-6 rounded-md shadow-md dark:bg-gray-900 dark:text-gray-50">
                                 <div className="mt-6 mb-2">
                                     <span
                                         className="block text-xs font-medium tracki uppercase dark:text-violet-400">{quest.name}</span>
