@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react';
 import QrReader from 'modern-react-qr-reader';
 import Modal from 'react-modal';
 import Swal from 'sweetalert2';
+import { getDistance } from 'geolib';
 
 export default function Home() {
     const [quests, setQuests] = useState([]);
@@ -17,11 +18,29 @@ export default function Home() {
             setQrData(data);
             setShowQrReader(false);
             if (data === selectedQuest.validate_code) {
-                Swal.fire(
-                    'Succès',
-                    'Vous avez validé la quête avec succès !',
-                    'success'
-                );
+                const userPosition = {
+                    latitude: userLocation.latitude,
+                    longitude: userLocation.longitude,
+                };
+                const questPosition = {
+                    latitude: parseFloat(selectedQuest.lat),
+                    longitude: parseFloat(selectedQuest.lon),
+                };
+                const distance = getDistance(userPosition, questPosition);
+
+                if (distance <= 500) {
+                    Swal.fire(
+                        'Succès',
+                        'Vous avez validé la quête avec succès !',
+                        'success'
+                    );
+                } else {
+                    Swal.fire(
+                        'Erreur',
+                        'Vous êtes trop loin du point de validation',
+                        'error'
+                    );
+                }
             } else {
                 Swal.fire(
                     'Erreur',
@@ -52,7 +71,6 @@ export default function Home() {
     const handleCardClick = (quest) => {
         setSelectedQuest(quest);
         setShowQrReader(true);
-        console.log(selectedQuest);
     };
 
     return (
