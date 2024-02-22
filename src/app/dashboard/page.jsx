@@ -62,6 +62,7 @@ export default function Home() {
                             'Vous avez validé la quête avec succès !',
                             'success'
                         );
+                        setReloadUserQuests(!reloadUserQuests);
                     } else {
                         Swal.fire(
                             'Erreur',
@@ -118,7 +119,6 @@ export default function Home() {
     const handleCardClick = (quest) => {
         setSelectedQuest(quest);
         setShowQrReader(true);
-        setReloadUserQuests(!reloadUserQuests);
     };
 
     return (
