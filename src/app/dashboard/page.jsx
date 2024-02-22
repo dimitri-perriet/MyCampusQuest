@@ -13,13 +13,13 @@ export default function Home() {
     const [qrData, setQrData] = useState(null);
     const [userLocation, setUserLocation] = useState(null);
     const [selectedQuest, setSelectedQuest] = useState(null);
+    const [userQuests, setUserQuests] = useState([]);
     const { user } = useUser();
-    const userId = user.id;
 
 
 
     async function saveQuest(userId, questId) {
-        const response = await fetch('/api/quest', {
+        const response = await fetch('/api/user', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ export default function Home() {
                 const distance = getDistance(userPosition, questPosition);
 
                 if (distance <= 500) {
-                    const saveSuccess = await saveQuest(userId, selectedQuest._id);
+                    const saveSuccess = await saveQuest(user.id, selectedQuest._id);
                     if (saveSuccess) {
                         Swal.fire(
                             'Succès',
@@ -89,6 +89,18 @@ export default function Home() {
     const handleError = (err) => {
         console.error(err);
     };
+
+    useEffect(() => {
+        if (user && user.id) {
+            console.log(user.id)
+            fetch(`/api/user?userId=${user.id}`)
+                .then(response => response.json())
+                .then(data => {
+                    setUserQuests(data);
+                    console.log(userQuests)
+                });
+        }
+    }, [user]);
 
     useEffect(() => {
         fetch('/api/quest')
