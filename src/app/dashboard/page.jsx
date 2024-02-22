@@ -4,6 +4,8 @@ import QrReader from 'modern-react-qr-reader';
 import Modal from 'react-modal';
 import Swal from 'sweetalert2';
 import { getDistance } from 'geolib';
+import { useUser } from "@clerk/nextjs";
+
 
 export default function Home() {
     const [quests, setQuests] = useState([]);
@@ -11,9 +13,33 @@ export default function Home() {
     const [qrData, setQrData] = useState(null);
     const [userLocation, setUserLocation] = useState(null);
     const [selectedQuest, setSelectedQuest] = useState(null);
+    const { user } = useUser();
+    const userId = user.id;
 
 
-    const handleScan = (data) => {
+
+    async function saveQuest(userId, questId) {
+        const response = await fetch('/api/quest', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userId: userId,
+                questId: questId,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Error saving quest');
+            return false;
+        }
+
+        const jsonResponse = await response.json();
+        return true;
+    }
+
+    const handleScan = async (data) => {
         if (data) {
             setQrData(data);
             setShowQrReader(false);
@@ -29,11 +55,20 @@ export default function Home() {
                 const distance = getDistance(userPosition, questPosition);
 
                 if (distance <= 500) {
-                    Swal.fire(
-                        'Succès',
-                        'Vous avez validé la quête avec succès !',
-                        'success'
-                    );
+                    const saveSuccess = await saveQuest(userId, selectedQuest._id);
+                    if (saveSuccess) {
+                        Swal.fire(
+                            'Succès',
+                            'Vous avez validé la quête avec succès !',
+                            'success'
+                        );
+                    } else {
+                        Swal.fire(
+                            'Erreur',
+                            'Le QR code est valide, mais il y a eu une erreur lors de l\'enregistrement de la quête',
+                            'error'
+                        );
+                    }
                 } else {
                     Swal.fire(
                         'Erreur',

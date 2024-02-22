@@ -9,3 +9,14 @@ export async function GET() {
 
   return NextResponse.json(quests);
 }
+
+export async function POST(req) {
+  await dbConnect();
+
+  const { userId, questId } = req.body;
+
+  const collection = db.collection('user_progression');
+  await collection.insertOne({ userId, questId });
+
+  return NextResponse.json({ message: 'User progress saved successfully' });
+}
