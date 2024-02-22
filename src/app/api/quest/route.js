@@ -14,7 +14,7 @@ export async function POST(req) {
   await dbConnect();
 
   const { userId, questId } = req.body;
-  console.log(userId, questId);
+  console.log(req.body);
 
   const collection = db.collection('user_progression');
   await collection.insertOne({ userId, questId });
