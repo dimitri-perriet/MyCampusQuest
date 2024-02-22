@@ -4,13 +4,16 @@ import {NextResponse} from "next/server";
 export async function POST(request) {
   await dbConnect();
 
-  // Récupérer les données de la requête
   const { userId, questId } = await request.json();
 
-  // Récupérer la collection de quêtes et de progression de l'utilisateur
   const userProgressionCollection = db.collection('user_progression');
 
-  // Créer un nouvel objet de progression pour l'utilisateur
+  const existingQuest = await userProgressionCollection.findOne({ userId: userId, questId: questId });
+
+  if (existingQuest) {
+    return NextResponse.json({ message: 'Quest already completed by the user' });
+  }
+
   const userProgression = {
     userId: userId,
     questId: questId,
@@ -18,7 +21,6 @@ export async function POST(request) {
     completed_at: new Date()
   };
 
-  // Ajouter la progression de l'utilisateur à la collection user_progression
   await userProgressionCollection.insertOne(userProgression);
 
   return NextResponse.json({ message: 'User progression saved successfully' });
