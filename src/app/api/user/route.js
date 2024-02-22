@@ -27,7 +27,7 @@ export async function POST(request) {
 export async function GET(request) {
   await dbConnect();
 
-  const { userId } = request.query;
+  const userId = request.nextUrl.searchParams.get("userID");
 
   const userProgressionCollection = db.collection('user_progression');
 
