@@ -3,8 +3,8 @@ import {useEffect, useState} from 'react';
 import QrReader from 'modern-react-qr-reader';
 import Modal from 'react-modal';
 import Swal from 'sweetalert2';
-import { getDistance } from 'geolib';
-import { useUser } from "@clerk/nextjs";
+import {getDistance} from 'geolib';
+import {useUser} from "@clerk/nextjs";
 
 
 export default function Home() {
@@ -14,8 +14,8 @@ export default function Home() {
     const [userLocation, setUserLocation] = useState(null);
     const [selectedQuest, setSelectedQuest] = useState(null);
     const [userQuests, setUserQuests] = useState([]);
-    const { user } = useUser();
-
+    const {user} = useUser();
+    const [reloadUserQuests, setReloadUserQuests] = useState(false);
 
 
     async function saveQuest(userId, questId) {
@@ -93,14 +93,14 @@ export default function Home() {
     useEffect(() => {
         if (user && user.id) {
             console.log(user.id)
-            fetch(`/api/user?userId=${user.id}`)
+            fetch(`/api/user?userID=${user.id}`)
                 .then(response => response.json())
                 .then(data => {
                     setUserQuests(data);
                     console.log(userQuests)
                 });
         }
-    }, [user]);
+    }, [user, reloadUserQuests]);
 
     useEffect(() => {
         fetch('/api/quest')
@@ -118,6 +118,7 @@ export default function Home() {
     const handleCardClick = (quest) => {
         setSelectedQuest(quest);
         setShowQrReader(true);
+        setReloadUserQuests(!reloadUserQuests);
     };
 
     return (
@@ -131,16 +132,34 @@ export default function Home() {
                 <div
                     className="container max-w-xl p-6 py-12 mx-auto space-y-24 lg:px-8 lg:max-w-7xl flex justify-center items-center">
                     <div className="grid lg:gap-8 lg:grid-cols-2 lg:items-center justify-center items-center">
-                        {quests.map((quest, index) => (
-                            <div key={index} onClick={() => handleCardClick(quest)}                                  className="max-w-xs p-6 rounded-md shadow-md dark:bg-gray-900 dark:text-gray-50">
-                                <div className="mt-6 mb-2">
-                                    <span
-                                        className="block text-xs font-medium tracki uppercase dark:text-violet-400">{quest.name}</span>
-                                    <h2 className="text-xl font-semibold tracki">{quest.description}</h2>
+                        {quests.map((quest, index) => {
+                            const userQuest = userQuests.find(userQuest => userQuest.questId === quest._id);
+                            const isCompleted = userQuest && userQuest.completed;
+                            const completedAt = isCompleted ? new Date(userQuest.completed_at).toLocaleDateString() : null;
+
+                            return (
+                                <div
+                                    key={index}
+                                    onClick={isCompleted ? null : () => handleCardClick(quest)}
+                                    className={`max-w-xs p-6 rounded-md shadow-md ${isCompleted ? 'bg-gray-400 dark:bg-gray-700 opacity-50' : 'dark:bg-gray-900'}`}
+                                >
+                                    <div className="mt-6 mb-2">
+                                        <span
+                                            className="block text-xs font-medium tracki uppercase dark:text-violet-400">{quest.name}</span>
+                                        <h2 className="text-xl font-semibold tracki">{quest.description}</h2>
+                                        {isCompleted && (
+                                            <div
+                                                className="inset-0 top-0 left-0 right-0 flex items-center justify-center">
+                                                <p className="text-green-800 text-xl font-semibold">Terminé
+                                                    le {completedAt}</p>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
+
                 </div>
             </section>
             <Modal
