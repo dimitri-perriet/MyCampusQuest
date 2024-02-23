@@ -1,56 +1,89 @@
 "use client";
 import React from 'react';
 import {UserButton, SignInButton, useUser} from "@clerk/nextjs";
+import Link from 'next/link';
 
 
-const Header = () => {
-    const { isLoaded, isSignedIn, user } = useUser();
+
+const Header = ({ children }) => {
+    const { user } = useUser();
+
+    const renderUserSection = () => {
+        if (user) {
+            return (
+                <>
+                    <div className="flex flex-col items-end ">
+                        <div className="text-md font-medium ">{user.firstName}</div>
+                        <div className="text-sm font-regular">{user.lastName}</div>
+                    </div>
+
+                    <UserButton/>
+                </>
+            );
+        } else {
+            return <SignInButton>Se connecter</SignInButton>;
+        }
+    };
 
     return (
-        <header className="p-4 dark:bg-gray-800 dark:text-gray-100">
-            <div className="container flex justify-between h-16 mx-auto">
-                <div className="flex">
-                    <a rel="noopener noreferrer" href="#" aria-label="Retour à la page d'accueil"
-                       className="flex items-center p-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 32 32"
-                             className="w-8 h-8 dark:text-violet-400">
-                            <path
-                                d="M27.912 7.289l-10.324-5.961c-0.455-0.268-1.002-0.425-1.588-0.425s-1.133 0.158-1.604 0.433l0.015-0.008-10.324 5.961c-0.955 0.561-1.586 1.582-1.588 2.75v11.922c0.002 1.168 0.635 2.189 1.574 2.742l0.016 0.008 10.322 5.961c0.455 0.267 1.004 0.425 1.59 0.425 0.584 0 1.131-0.158 1.602-0.433l-0.014 0.008 10.322-5.961c0.955-0.561 1.586-1.582 1.588-2.75v-11.922c-0.002-1.168-0.633-2.189-1.573-2.742zM27.383 21.961c0 0.389-0.211 0.73-0.526 0.914l-0.004 0.002-10.324 5.961c-0.152 0.088-0.334 0.142-0.53 0.142s-0.377-0.053-0.535-0.145l0.005 0.002-10.324-5.961c-0.319-0.186-0.529-0.527-0.529-0.916v-11.922c0-0.389 0.211-0.73 0.526-0.914l0.004-0.002 10.324-5.961c0.152-0.090 0.334-0.143 0.53-0.143s0.377 0.053 0.535 0.144l-0.006-0.002 10.324 5.961c0.319 0.185 0.529 0.527 0.529 0.916z"></path>
-                            <path
-                                d="M22.094 19.451h-0.758c-0.188 0-0.363 0.049-0.515 0.135l0.006-0.004-4.574 2.512-5.282-3.049v-6.082l5.282-3.051 4.576 2.504c0.146 0.082 0.323 0.131 0.508 0.131h0.758c0.293 0 0.529-0.239 0.529-0.531v-0.716c0-0.2-0.11-0.373-0.271-0.463l-0.004-0.002-5.078-2.777c-0.293-0.164-0.645-0.26-1.015-0.26-0.39 0-0.756 0.106-1.070 0.289l0.010-0.006-5.281 3.049c-0.636 0.375-1.056 1.055-1.059 1.834v6.082c0 0.779 0.422 1.461 1.049 1.828l0.009 0.006 5.281 3.049c0.305 0.178 0.67 0.284 1.061 0.284 0.373 0 0.723-0.098 1.027-0.265l-0.012 0.006 5.080-2.787c0.166-0.091 0.276-0.265 0.276-0.465v-0.716c0-0.293-0.238-0.529-0.529-0.529z"></path>
-                        </svg>
-                    </a>
-                    <ul className="items-stretch hidden space-x-3 lg:flex">
-                        <li className="flex">
-                            <a rel="noopener noreferrer" href="#"
-                               className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent">Lien 1</a>
-                        </li>
-                        <li className="flex">
-                            <a rel="noopener noreferrer" href="#"
-                               className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent dark:text-violet-400 dark:border-violet-400">Link</a>
-                        </li>
-                        <li className="flex">
-                            <a rel="noopener noreferrer" href="#"
-                               className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent">Lien 2</a>
-                        </li>
-                        <li className="flex">
-                            <a rel="noopener noreferrer" href="#"
-                               className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent">Lien 3</a>
-                        </li>
-                    </ul>
-                </div>
+        <div className="h-screen w-full bg-white relative flex overflow-hidden">
 
-                {isSignedIn ? (
-                    <span className="flex items-center">
-                        <UserButton afterSignOutUrl="/"/>
-                    </span>
-                ) : (
-                    <span className="flex items-center">
-                        <SignInButton>Se connecter</SignInButton>
-                    </span>
-                )}
+            <aside
+                className="h-full w-16 flex flex-col space-y-10 items-center justify-center relative bg-gray-800 text-white">
+
+                <Link href="/dashboard">
+                    <div
+                        className="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                    </div>
+                </Link>
+
+{/*                <div
+                    className="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                              d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                </div>*/}
+
+                <Link href="/help">
+                    <div
+                        className="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                </Link>
+
+            </aside>
+
+
+            <div className="w-full h-full flex flex-col justify-between">
+                <header className="h-16 w-full flex items-center relative justify-end px-5 space-x-10 bg-gray-800">
+                    <div className="flex flex-shrink-0 items-center space-x-4 text-white">
+                        {renderUserSection()}
+                    </div>
+                </header>
+
+                <main className="max-w-full h-full flex relative overflow-y-hidden">
+                    <div
+                        className="h-full w-full p-4 flex flex-wrap items-start justify-center grid-flow-col auto-cols-max gap-4 overflow-y-scroll dark:bg-gray-800 dark:text-gray-100">
+                        {children}
+                    </div>
+                </main>
             </div>
-        </header>
+
+        </div>
+
     );
 };
 

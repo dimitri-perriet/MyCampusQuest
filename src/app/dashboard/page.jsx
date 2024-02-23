@@ -93,12 +93,10 @@ export default function Home() {
 
     useEffect(() => {
         if (user && user.id) {
-            console.log(user.id)
             fetch(`/api/user?userID=${user.id}`)
                 .then(response => response.json())
                 .then(data => {
                     setUserQuests(data);
-                    console.log(userQuests)
                 });
         }
     }, [user, reloadUserQuests]);
@@ -150,7 +148,7 @@ export default function Home() {
                                         {isCompleted && (
                                             <div
                                                 className="inset-0 top-0 left-0 right-0 flex items-center justify-center">
-                                                <p className="text-green-800 text-xl font-semibold">Terminé
+                                                <p className="text-green-800 text-xl font-semibold dark:text-green-500">Terminé
                                                     le {completedAt}</p>
                                             </div>
                                         )}
