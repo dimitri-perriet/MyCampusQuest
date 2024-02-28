@@ -18,6 +18,7 @@ export default function Home() {
     const [userQuests, setUserQuests] = useState([]);
     const {user} = useUser();
     const [reloadUserQuests, setReloadUserQuests] = useState(false);
+    const [offlineQuestsStade, setOfflineQuestsStade] = useState([]);
 
 
     async function saveQuest(userId, questId) {
@@ -60,6 +61,7 @@ export default function Home() {
                     'Vous avez validé la quête avec succès et elle a été mis en cache avec succès car vous êtes offline !',
                     'success'
                 );
+                setOfflineQuestsStade(offlineQuests.map(quest => quest.body));
                 return true;
             } else {
                 throw error;
@@ -183,7 +185,17 @@ export default function Home() {
     }
 }
 
+    useEffect(() => {
+        const fetchData = async () => {
+           return await localForage.getItem('offlineQuests') || [];
 
+        };
+
+        fetchData().then(data => {
+            setOfflineQuestsStade(data.map(quest => quest.body));
+        });
+
+    }, []);
 
     return (
         <div>
@@ -200,6 +212,10 @@ export default function Home() {
                             const userQuest = userQuests.find(userQuest => userQuest.questId === quest._id);
                             const isCompleted = userQuest && userQuest.completed;
                             const completedAt = isCompleted ? new Date(userQuest.completed_at).toLocaleDateString() : null;
+                            const isPending = offlineQuestsStade.includes(JSON.stringify({
+                                userId: user.id,
+                                questId: quest._id,
+                            }));
 
                             return (
                                 <div
@@ -216,6 +232,12 @@ export default function Home() {
                                                 className="inset-0 top-0 left-0 right-0 flex items-center justify-center">
                                                 <p className="text-green-800 text-xl font-semibold dark:text-green-500">Terminé
                                                     le {completedAt}</p>
+                                            </div>
+                                        )}
+                                        {isPending && (
+                                            <div
+                                                className="inset-0 top-0 left-0 right-0 flex items-center justify-center">
+                                                <p className="text-yellow-800 text-xl font-semibold dark:text-yellow-500">En attente</p>
                                             </div>
                                         )}
                                     </div>
