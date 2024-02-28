@@ -5,6 +5,8 @@ import Modal from 'react-modal';
 import Swal from 'sweetalert2';
 import {getDistance} from 'geolib';
 import {useUser} from "@clerk/nextjs";
+import localForage from "localforage";
+
 
 
 export default function Home() {
@@ -19,26 +21,51 @@ export default function Home() {
 
 
     async function saveQuest(userId, questId) {
-        const response = await fetch('/api/user', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                userId: userId,
-                questId: questId,
-            }),
-        });
+        try {
+            const response = await fetch('/api/user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    questId: questId,
+                }),
+            });
 
-        if (!response.ok) {
-            throw new Error('Error saving quest');
-            return false;
+            if (!response.ok) {
+                throw new Error('Error saving quest');
+            }
+
+            const jsonResponse = await response.json();
+            return true;
+        } catch (error) {
+            if (!navigator.onLine) {
+
+                let offlineQuests = await localForage.getItem('offlineQuests') || [];
+                offlineQuests.push({
+                    url: '/api/user',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: userId,
+                        questId: questId,
+                    }),
+                });
+                await localForage.setItem('offlineQuests', offlineQuests);
+                Swal.fire(
+                    'Mis en cache !',
+                    'Vous avez validé la quête avec succès et elle a été mis en cache avec succès car vous êtes offline !',
+                    'success'
+                );
+                return false;
+            } else {
+                throw error;
+            }
         }
-
-        const jsonResponse = await response.json();
-        return true;
     }
-
     const handleScan = async (data) => {
         if (data) {
             setQrData(data);
@@ -124,6 +151,32 @@ export default function Home() {
         setSelectedQuest(quest);
         setShowQrReader(true);
     };
+
+    window.addEventListener('online', async () => {
+        let offlineQuests = await localForage.getItem('offlineQuests');
+        if (offlineQuests) {
+            for (const offlineQuest of offlineQuests) {
+                try {
+                    const response = await fetch(offlineQuest.url, {
+                        method: offlineQuest.method,
+                        headers: offlineQuest.headers,
+                        body: offlineQuest.body,
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Error retrying quest');
+                    }
+
+                    const jsonResponse = await response.json();
+                    // Supprimer la quête réussie de la liste
+                    offlineQuests = offlineQuests.filter(quest => quest !== offlineQuest);
+                    await localForage.setItem('offlineQuests', offlineQuests);
+                } catch (error) {
+                    console.error('Error retrying quest:', error);
+                }
+            }
+        }
+    });
 
     return (
         <div>
