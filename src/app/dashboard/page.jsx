@@ -76,12 +76,12 @@ export default function Home() {
             setQrData(data);
             setShowQrReader(false);
             if (data === selectedQuest.validate_code) {
-                const userPosition = {
+                let userPosition = {
                     latitude: parseFloat(selectedQuest.lat),
                     longitude: parseFloat(selectedQuest.lon),
                 };
                 if (navigator.onLine) {
-                    const userPosition = {
+                     userPosition = {
                         latitude: userLocation.latitude,
                         longitude: userLocation.longitude,
                     };
