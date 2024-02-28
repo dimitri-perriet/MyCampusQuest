@@ -39,7 +39,7 @@ export default () => {
                             Contact
                         </h3>
                         <p className="dark:text-gray-100 text-3xl font-semibold sm:text-4xl">
-                            Faite nous savoir comment nous pouvons vous aider
+                            Faites nous savoir comment nous pouvons vous aider
                         </p>
                         <p className="dark:text-gray-100">
                             Nous sommes là pour vous aider et répondre à toutes vos questions. N'hésitez pas à nous contacter pour toute demande de renseignements.
