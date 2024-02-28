@@ -60,7 +60,7 @@ export default function Home() {
                     'Vous avez validé la quête avec succès et elle a été mis en cache avec succès car vous êtes offline !',
                     'success'
                 );
-                return false;
+                return true;
             } else {
                 throw error;
             }
