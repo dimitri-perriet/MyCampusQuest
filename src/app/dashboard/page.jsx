@@ -153,6 +153,7 @@ export default function Home() {
     };
 
     window.addEventListener('online', async () => {
+        console.log('You are now online');
         let offlineQuests = await localForage.getItem('offlineQuests');
         if (offlineQuests) {
             for (const offlineQuest of offlineQuests) {
