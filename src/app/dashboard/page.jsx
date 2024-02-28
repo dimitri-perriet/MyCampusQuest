@@ -54,7 +54,7 @@ export default function Home() {
                 };
                 const distance = getDistance(userPosition, questPosition);
 
-                if (distance <= 500) {
+                if (distance <= 1000) {
                     const saveSuccess = await saveQuest(user.id, selectedQuest._id);
                     if (saveSuccess) {
                         Swal.fire(
