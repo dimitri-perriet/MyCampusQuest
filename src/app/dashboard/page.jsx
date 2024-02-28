@@ -18,7 +18,6 @@ export default function Home() {
     const [userQuests, setUserQuests] = useState([]);
     const {user} = useUser();
     const [reloadUserQuests, setReloadUserQuests] = useState(false);
-    const [offlineQuestsStade, setOfflineQuestsStade] = useState([]);
 
 
     async function saveQuest(userId, questId) {
@@ -56,8 +55,6 @@ export default function Home() {
                     }),
                 });
                 await localForage.setItem('offlineQuests', offlineQuests);
-                setOfflineQuestsStade(offlineQuests.map(quest => quest.body));
-
                 Swal.fire(
                     'Mis en cache !',
                     'Vous avez validé la quête avec succès et elle a été mis en cache avec succès car vous êtes offline !',
@@ -127,7 +124,7 @@ export default function Home() {
         console.error(err);
     };
 
-    useEffect(async () => {
+    useEffect(() => {
         if (user && user.id) {
             fetch(`/api/user?userID=${user.id}`)
                 .then(response => response.json())
@@ -135,14 +132,9 @@ export default function Home() {
                     setUserQuests(data);
                 });
         }
-
-        const offlineQuests = await localForage.getItem('offlineQuests') || [];
-        setOfflineQuestsStade(offlineQuests.map(quest => quest.body));
-
-
     }, [user, reloadUserQuests]);
 
-    useEffect(async () => {
+    useEffect( () => {
         fetch('/api/quest')
             .then(response => response.json())
             .then(data => setQuests(data));
@@ -154,36 +146,44 @@ export default function Home() {
             });
         });
 
-        if (navigator.onLine) {
-            let offlineQuests = await localForage.getItem('offlineQuests');
-            if (offlineQuests) {
-                for (const offlineQuest of offlineQuests) {
-                    try {
-                        const response = await fetch(offlineQuest.url, {
-                            method: offlineQuest.method,
-                            headers: offlineQuest.headers,
-                            body: offlineQuest.body,
-                        });
 
-                        if (!response.ok) {
-                            throw new Error('Error retrying quest');
-                        }
+        retryOfflineQuests();
 
-                        const jsonResponse = await response.json();
-                        offlineQuests = offlineQuests.filter(quest => quest !== offlineQuest);
-                        await localForage.setItem('offlineQuests', offlineQuests);
-                    } catch (error) {
-                        console.error('Erreur lors du sauvegarde', error);
-                    }
-                }
-            }
-        }
     }, []);
 
     const handleCardClick = (quest) => {
         setSelectedQuest(quest);
         setShowQrReader(true);
     };
+
+    async function retryOfflineQuests() {
+    if (navigator.onLine) {
+        let offlineQuests = await localForage.getItem('offlineQuests');
+        if (offlineQuests) {
+            for (const offlineQuest of offlineQuests) {
+                try {
+                    const response = await fetch(offlineQuest.url, {
+                        method: offlineQuest.method,
+                        headers: offlineQuest.headers,
+                        body: offlineQuest.body,
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Error retrying quest');
+                    }
+
+                    const jsonResponse = await response.json();
+                    offlineQuests = offlineQuests.filter(quest => quest !== offlineQuest);
+                    await localForage.setItem('offlineQuests', offlineQuests);
+                } catch (error) {
+                    console.error('Error retrying quest:', error);
+                }
+            }
+        }
+    }
+}
+
+
 
     return (
         <div>
@@ -200,10 +200,6 @@ export default function Home() {
                             const userQuest = userQuests.find(userQuest => userQuest.questId === quest._id);
                             const isCompleted = userQuest && userQuest.completed;
                             const completedAt = isCompleted ? new Date(userQuest.completed_at).toLocaleDateString() : null;
-                            const isPending = offlineQuestsStade.includes(JSON.stringify({
-                                userId: user.id,
-                                questId: quest._id,
-                            }));
 
                             return (
                                 <div
@@ -220,12 +216,6 @@ export default function Home() {
                                                 className="inset-0 top-0 left-0 right-0 flex items-center justify-center">
                                                 <p className="text-green-800 text-xl font-semibold dark:text-green-500">Terminé
                                                     le {completedAt}</p>
-                                            </div>
-                                        )}
-                                        {isPending && (
-                                            <div
-                                                className="inset-0 top-0 left-0 right-0 flex items-center justify-center">
-                                                <p className="text-yellow-800 text-xl font-semibold dark:text-yellow-500">En attente de connexion</p>
                                             </div>
                                         )}
                                     </div>
