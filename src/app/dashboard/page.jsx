@@ -134,7 +134,7 @@ export default function Home() {
         }
     }, [user, reloadUserQuests]);
 
-    useEffect(() => {
+    useEffect(async () => {
         fetch('/api/quest')
             .then(response => response.json())
             .then(data => setQuests(data));
@@ -145,6 +145,32 @@ export default function Home() {
                 longitude: position.coords.longitude,
             });
         });
+
+        if (navigator.onLine) {
+            let offlineQuests = await localForage.getItem('offlineQuests');
+            if (offlineQuests) {
+                for (const offlineQuest of offlineQuests) {
+                    try {
+                        const response = await fetch(offlineQuest.url, {
+                            method: offlineQuest.method,
+                            headers: offlineQuest.headers,
+                            body: offlineQuest.body,
+                        });
+
+                        if (!response.ok) {
+                            throw new Error('Error retrying quest');
+                        }
+
+                        const jsonResponse = await response.json();
+                        // Supprimer la quête réussie de la liste
+                        offlineQuests = offlineQuests.filter(quest => quest !== offlineQuest);
+                        await localForage.setItem('offlineQuests', offlineQuests);
+                    } catch (error) {
+                        console.error('Error retrying quest:', error);
+                    }
+                }
+            }
+        }
     }, []);
 
     const handleCardClick = (quest) => {
