@@ -220,8 +220,8 @@ export default function Home() {
                             return (
                                 <div
                                     key={index}
-                                    onClick={isCompleted ? null : () => handleCardClick(quest)}
-                                    className={`mb-4 max-w-xs p-6 rounded-md shadow-md ${isCompleted ? 'bg-gray-400 dark:bg-gray-700 opacity-50' : 'dark:bg-gray-900'}`}
+                                    onClick={isCompleted || isPending ? null : () => handleCardClick(quest)}
+                                    className={`mb-4 max-w-xs p-6 rounded-md shadow-md ${isCompleted || isPending ? 'bg-gray-400 dark:bg-gray-700 opacity-50' : 'dark:bg-gray-900'}`}
                                 >
                                     <div className="mt-6 mb-2">
                                         <span
