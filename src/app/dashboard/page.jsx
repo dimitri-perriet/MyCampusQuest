@@ -212,9 +212,7 @@ export default function Home() {
                             const userQuest = userQuests.find(userQuest => userQuest.questId === quest._id);
                             const isCompleted = userQuest && userQuest.completed;
                             const completedAt = isCompleted ? new Date(userQuest.completed_at).toLocaleDateString() : null;
-                            const isPending = offlineQuestsStade.includes(JSON.stringify({
-                                questId: quest._id,
-                            }));
+                            const isPending = offlineQuestsStade.map(JSON.parse).some(offlineQuest => offlineQuest.questId === quest._id);
 
                             return (
                                 <div
