@@ -44,15 +44,14 @@ export default function Home() {
             setQrData(data);
             setShowQrReader(false);
             if (data === selectedQuest.validate_code) {
+                const userPosition = {
+                    latitude: parseFloat(selectedQuest.lat),
+                    longitude: parseFloat(selectedQuest.lon),
+                };
                 if (navigator.onLine) {
                     const userPosition = {
                         latitude: userLocation.latitude,
                         longitude: userLocation.longitude,
-                    };
-                } else {
-                    const userPosition = {
-                        latitude: parseFloat(selectedQuest.lat),
-                        longitude: parseFloat(selectedQuest.lon),
                     };
                 }
                 const questPosition = {
