@@ -181,14 +181,15 @@ export default function Home() {
                     });
 
                     if (!response.ok) {
-                        throw new Error('Error retrying quest');
+                        throw new Error('Erreur lors de la tentative de quête hors ligne.');
                     }
 
                     const jsonResponse = await response.json();
                     offlineQuests = offlineQuests.filter(quest => quest !== offlineQuest);
                     await localForage.setItem('offlineQuests', offlineQuests);
+                    setOfflineQuestsStade(offlineQuests.map(quest => quest.body));
                 } catch (error) {
-                    console.error('Error retrying quest:', error);
+                    console.error('Erreur lors de la tentative de quête hors ligne :', error);
                 }
             }
             setReloadUserQuests(!reloadUserQuests);
