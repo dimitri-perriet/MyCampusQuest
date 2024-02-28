@@ -181,6 +181,7 @@ export default function Home() {
                     console.error('Error retrying quest:', error);
                 }
             }
+            setReloadUserQuests(!reloadUserQuests);
         }
     }
 }
