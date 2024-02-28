@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import {getDistance} from 'geolib';
 import {useUser} from "@clerk/nextjs";
 import localForage from "localforage";
+import Loader from "@/app/components/Loader";
 
 
 
@@ -19,6 +20,8 @@ export default function Home() {
     const {user} = useUser();
     const [reloadUserQuests, setReloadUserQuests] = useState(false);
     const [offlineQuestsStade, setOfflineQuestsStade] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
 
 
     async function saveQuest(userId, questId) {
@@ -128,15 +131,22 @@ export default function Home() {
 
     useEffect(() => {
         if (user && user.id) {
+            setIsLoading(true);
             fetch(`/api/user?userID=${user.id}`)
                 .then(response => response.json())
                 .then(data => {
                     setUserQuests(data);
-                });
+                    setIsLoading(false);
+                })
+                .catch(() => {
+                    setIsLoading(false);
+                 })
+            ;
         }
     }, [user, reloadUserQuests]);
 
     useEffect( () => {
+        setIsLoading(true);
         fetch('/api/quest')
             .then(response => response.json())
             .then(data => setQuests(data));
@@ -206,8 +216,9 @@ export default function Home() {
                     <p className="max-w-3xl mx-auto mt-4 text-xl text-center dark:text-gray-400">dans votre espace
                         personnel</p>
                 </div>
+                {isLoading && <Loader />}
                 <div
-                    className="container max-w-xl p-6 py-12 mx-auto space-y-24 lg:px-8 lg:max-w-7xl flex justify-center items-center">
+                    className={`container max-w-xl p-6 py-12 mx-auto space-y-24 lg:px-8 lg:max-w-7xl justify-center items-center ${isLoading ? 'hidden' : 'flex'}`}>
                     <div className="grid lg:gap-8 lg:grid-cols-2 lg:items-center justify-center items-center">
                         {quests.map((quest, index) => {
                             const userQuest = userQuests.find(userQuest => userQuest.questId === quest._id);
