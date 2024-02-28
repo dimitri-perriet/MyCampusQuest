@@ -236,7 +236,7 @@ export default function Home() {
                                         {isPending && (
                                             <div
                                                 className="inset-0 top-0 left-0 right-0 flex items-center justify-center">
-                                                <p className="text-yellow-800 text-xl font-semibold dark:text-yellow-500">En attente</p>
+                                                <p className="text-yellow-800 text-xl font-semibold dark:text-yellow-500">En attente de connexion</p>
                                             </div>
                                         )}
                                     </div>
