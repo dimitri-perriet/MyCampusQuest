@@ -1,8 +1,8 @@
 {
   "id": "89",
-  "name": "MyDigitalQuest",
-  "short_name": "MyDigitalQuest",
-  "description": "This next.js app is a PWA.",
+  "name": "MyCampusQuest",
+  "short_name": "MyCampusQuest",
+  "description": "MyCampusQuest est une application de chasse au trésor pour les campus. Elle permet de découvrir des lieux et des histoires de manière ludique.",
   "icons": [
     {
       "src": "./logo72x72.png",
