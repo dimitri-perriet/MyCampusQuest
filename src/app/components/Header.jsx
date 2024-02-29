@@ -2,6 +2,7 @@
 import React from 'react';
 import {UserButton, SignInButton, useUser} from "@clerk/nextjs";
 import Link from 'next/link';
+import { usePathname } from 'next/navigation'
 
 
 
@@ -25,9 +26,12 @@ const Header = ({ children }) => {
         }
     };
 
+    const pathname = usePathname();
+
     return (
         <div className="h-screen w-full bg-white relative flex overflow-hidden">
 
+            {pathname !== '/login' && (
             <aside
                 className="h-full w-16 flex flex-col space-y-10 items-center justify-center relative dark:bg-gray-800 ">
 
@@ -65,6 +69,7 @@ const Header = ({ children }) => {
                 </Link>
 
             </aside>
+            )}
 
 
             <div className="w-full h-full flex flex-col justify-between">

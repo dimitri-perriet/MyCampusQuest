@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# MyCampusQuest
 
-## Getting Started
+MyCampusQuest est une application de chasse au trésor pour les campus. Elle permet de découvrir des lieux et des histoires de manière ludique.
 
-First, run the development server:
+Ce projet est basé sur [Next.js](https://nextjs.org/), un framework React populaire pour le développement d'applications web.
+
+## Prérequis
+
+- Node.js
+- npm
+
+## Installation
+
+Pour installer les dépendances du projet, exécutez la commande suivante avec l'option --force :
+
+```bash
+npm install --force
+```
+
+## Développement
+
+Pour lancer le serveur de développement, exécutez la commande suivante :
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ouvrez [http://localhost:3000](http://localhost:3000) avec votre navigateur pour voir le résultat.
 
-You can start editing the page by modifying `app/page.jsx`. The page auto-updates as you edit the file.
+## Construction
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Pour construire l'application pour la production, exécutez la commande suivante :
 
-## Learn More
+```bash
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Authentification
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+L'authentification dans cette application est gérée par [Clerk](https://clerk.dev/).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Déploiement
 
-## Deploy on Vercel
+L'application est déployée sur [Vercel](https://vercel.com/) et est accessible à l'adresse [mcq.perriet.fr](https://mcq.perriet.fr).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Mode hors ligne
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+MyCampusQuest prend en charge le mode hors ligne. Si vous êtes déconnecté, vous pouvez toujours valider les quêtes. Les validations de quêtes effectuées hors ligne sont mises en cache et seront synchronisées avec le serveur une fois la connexion rétablie.
+
+## Localisation des quêtes
+
+Les quêtes sont localisées sur le campus. Vous devez être à proximité de la localisation d'une quête pour pouvoir la valider.
+
+## Outrepasser la localisation en mode hors ligne
+
+En mode hors ligne, la vérification de la localisation est désactivée. Cela signifie que vous pouvez valider une quête même si vous n'êtes pas à proximité de sa localisation. Cela peut être utile si vous ne pouvez pas vous rendre sur le campus.
