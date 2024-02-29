@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@clerk/localizations": "^1.26.13",
-    "@clerk/nextjs": "^4.29.5",
+    "@clerk/nextjs": "^5.0.0-beta.27",
     "@ducanh2912/next-pwa": "^10.2.2",
     "aws4": "^1.12.0",
     "emailjs-com": "^3.2.0",
