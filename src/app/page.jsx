@@ -25,9 +25,8 @@ export default function Home() {
             </div>
             <div className="grid lg:gap-8 lg:grid-cols-2 lg:items-center">
               <div>
-                <h3 className="text-2xl font-bold tracki sm:text-3xl dark:text-gray-50">Ad vix debet docendi</h3>
-                <p className="mt-3 text-lg dark:text-gray-400">Ne dicta praesent ocurreret has, diam theophrastus at
-                  pro. Eos etiam regione ut, persius eripuit quo id. Sit te euismod tacimates.</p>
+                <h3 className="text-2xl font-bold tracki sm:text-3xl dark:text-gray-50">Explorez et amusez-vous</h3>
+                <p className="mt-3 text-lg dark:text-gray-400">Découvrez votre campus d'une toute nouvelle manière. Trouvez des trésors cachés, explorez des recoins inconnus et plongez dans les récits fascinants qui donnent vie à chaque bâtiment et à chaque endroit.</p>
                 <div className="mt-12 space-y-12">
                   <div className="flex">
                     <div className="flex-shrink-0">
@@ -40,9 +39,8 @@ export default function Home() {
                       </div>
                     </div>
                     <div className="ml-4">
-                      <h4 className="text-lg font-medium leadi dark:text-gray-50">Per ei quaeque sensibus</h4>
-                      <p className="mt-2 dark:text-gray-400">Ex usu illum iudico molestie. Pro ne agam facete
-                        mediocritatem, ridens labore facete mea ei. Pro id apeirian dignissim.</p>
+                      <h4 className="text-lg font-medium leadi dark:text-gray-50">Des aventures sans fin</h4>
+                      <p className="mt-2 dark:text-gray-400">Partez à l'aventure à travers les ruelles pittoresques et les places animées de votre campus. Chaque découverte vous rapproche du trésor final et vous plonge plus profondément dans l'histoire captivante de votre école.</p>
                     </div>
                   </div>
                   <div className="flex">
@@ -56,9 +54,8 @@ export default function Home() {
                       </div>
                     </div>
                     <div className="ml-4">
-                      <h4 className="text-lg font-medium leadi dark:text-gray-50">Cu imperdiet posidonium sed</h4>
-                      <p className="mt-2 dark:text-gray-400">Amet utinam aliquando ut mea, malis admodum ocurreret nec
-                        et, elit tibique cu nec. Nec ex maluisset inciderint, ex quis.</p>
+                      <h4 className="text-lg font-medium leadi dark:text-gray-50">Des défis excitants</h4>
+                      <p className="mt-2 dark:text-gray-400">Affrontez des énigmes complexes, relevez des défis stimulants et gagnez des récompenses exclusives en chemin. Chaque étape de MyCampusQuest vous pousse à repousser vos limites et à explorer votre campus sous un nouveau jour.</p>
                     </div>
                   </div>
                   <div className="flex">
@@ -72,24 +69,22 @@ export default function Home() {
                       </div>
                     </div>
                     <div className="ml-4">
-                      <h4 className="text-lg font-medium leadi dark:text-gray-50">Nulla omittam sadipscing mel ne</h4>
-                      <p className="mt-2 dark:text-gray-400">At sed possim oporteat probatus, justo graece ne nec, minim
-                        commodo legimus ut vix. Ut eos iudico quando soleat, nam modus.</p>
+                      <h4 className="text-lg font-medium leadi dark:text-gray-50">Une expérience inoubliable</h4>
+                      <p className="mt-2 dark:text-gray-400">Créez des souvenirs durables avec vos amis tout en explorant les trésors cachés de votre campus. MyCampusQuest vous offre une expérience immersive que vous n'oublierez pas de sitôt.</p>
                     </div>
                   </div>
                 </div>
               </div>
               <div aria-hidden="true" className="mt-10 lg:mt-0">
-                <img src="https://source.unsplash.com/random/360x480" alt=""
-                     className="mx-auto rounded-lg shadow-lg dark:bg-gray-500"/>
+                <img src="/campus-caen.png" alt=""
+                     className="mx-auto rounded-lg "/>
               </div>
             </div>
             <div>
               <div className="grid lg:gap-8 lg:grid-cols-2 lg:items-center">
                 <div className="lg:col-start-2">
-                  <h3 className="text-2xl font-bold tracki sm:text-3xl dark:text-gray-50">Eam nibh gloriatur ex</h3>
-                  <p className="mt-3 text-lg dark:text-gray-400">Per odio fabellas consulatu cu. Utroque detracto mel
-                    ea, quo te latine theophrastus. Ea his tale nibh dissentias, mei exerci tamquam euripidis cu.</p>
+                  <h3 className="text-2xl font-bold tracki sm:text-3xl dark:text-gray-50">Développez votre campus</h3>
+                  <p className="mt-3 text-lg dark:text-gray-400">Contribuez à l'enrichissement de votre campus en partageant vos découvertes, vos récits et vos expériences avec la communauté. Chaque contribution ajoute une nouvelle dimension à l'expérience de chasse au trésor.</p>
                   <div className="mt-12 space-y-12">
                     <div className="flex">
                       <div className="flex-shrink-0">
@@ -103,9 +98,8 @@ export default function Home() {
                         </div>
                       </div>
                       <div className="ml-4">
-                        <h4 className="text-lg font-medium leadi dark:text-gray-50">Cibo augue offendit has ad</h4>
-                        <p className="mt-2 dark:text-gray-400">An per velit appellantur, ut utinam minimum nominavi sit,
-                          odio nostro habemus ne nec. Ne sonet regione contentiones est.</p>
+                        <h4 className="text-lg font-medium leadi dark:text-gray-50">Partagez vos découvertes</h4>
+                        <p className="mt-2 dark:text-gray-400">Faites partie d'une communauté passionnée de chercheurs de trésors en partageant vos lieux préférés, vos histoires les plus intrigantes et vos secrets les mieux gardés de votre campus.</p>
                       </div>
                     </div>
                     <div className="flex">
@@ -120,9 +114,8 @@ export default function Home() {
                         </div>
                       </div>
                       <div className="ml-4">
-                        <h4 className="text-lg font-medium leadi dark:text-gray-50">At eum ferri luptatum lobortis</h4>
-                        <p className="mt-2 dark:text-gray-400">Te per quidam maiorum ocurreret, etiam delicatissimi usu
-                          ad. Ne has quod periculis. Te sit primis iisque efficiantur.</p>
+                        <h4 className="text-lg font-medium leadi dark:text-gray-50">Connectez-vous avec d'autres explorateurs</h4>
+                        <p className="mt-2 dark:text-gray-400">Rencontrez des personnes partageant les mêmes idées, échangez des conseils et des astuces, et créez des liens durables avec d'autres membres de la communauté MyDigitalSchool. Votre prochaine grande aventure commence ici.</p>
                       </div>
                     </div>
                     <div className="flex">
@@ -137,16 +130,14 @@ export default function Home() {
                         </div>
                       </div>
                       <div className="ml-4">
-                        <h4 className="text-lg font-medium leadi dark:text-gray-50">Dicunt verterem evertitur eu
-                          sea</h4>
-                        <p className="mt-2 dark:text-gray-400">Audire principes rationibus eam an, autem nominavi
-                          luptatum per te. Sumo fabulas vim eu, sonet saperet eleifend ut vix.</p>
+                        <h4 className="text-lg font-medium leadi dark:text-gray-50">Enrichissez l'expérience de tous</h4>
+                        <p className="mt-2 dark:text-gray-400">Contribuez à la croissance de la communauté en partageant vos connaissances, vos compétences et votre passion pour l'aventure. Ensemble, nous pouvons rendre chaque campus plus vivant et plus passionnant que jamais.</p>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="mt-10 lg:mt-0 lg:col-start-1 lg:row-start-1">
-                  <img src="https://source.unsplash.com/random/361x481" alt=""
+                  <img src="/campus-2.png" alt=""
                        className="mx-auto rounded-lg shadow-lg dark:bg-gray-500"/>
                 </div>
               </div>
