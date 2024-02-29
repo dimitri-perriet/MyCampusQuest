@@ -1,3 +1,7 @@
+## Déploiement
+
+L'application est déployée sur [Vercel](https://vercel.com/) et est accessible à l'adresse [mcq.perriet.fr](https://mcq.perriet.fr).
+
 # MyCampusQuest
 
 MyCampusQuest est une application de chasse au trésor pour les campus. Elle permet de découvrir des lieux et des histoires de manière ludique.
@@ -38,10 +42,6 @@ npm run build
 ## Authentification
 
 L'authentification dans cette application est gérée par [Clerk](https://clerk.dev/).
-
-## Déploiement
-
-L'application est déployée sur [Vercel](https://vercel.com/) et est accessible à l'adresse [mcq.perriet.fr](https://mcq.perriet.fr).
 
 ## Mode hors ligne
 
